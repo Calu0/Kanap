@@ -1,3 +1,3 @@
 # Kanap #
 
-This is the first front end oriented project I have done, using only javascript for the front-end of the page.
+This is the first project I did with javascript, only the javascript side of the front-end of the page has been realized.
