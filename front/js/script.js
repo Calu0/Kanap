@@ -1,13 +1,13 @@
  
 async function newKanap(){
 
-// récupération de la data des produits depuis le serveur back avec la fonction fetch
+// récupération des produits depuis le serveur back avec la fonction fetch
 
    await fetch("http://localhost:3000/api/products")
    .then(products => products.json())
    .then(array => {
 
-// Je créer une boucle afin de créer un élémént HTML pour chaque produits récupérer par la fonction fetch
+// Création d'une boucle afin de créer un élémént HTML pour chaque produit récupéré par la fonction fetch
 
       for(let i = 0; i < array.length; i++){
 
