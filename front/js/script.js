@@ -37,27 +37,4 @@ async function newKanap() {
 
 }
 
-
 newKanap()
-
-
-
-/*
-await fetch("http://localhost:3000/api/products")
-   .then((response) => response.json())
-   .then((array) => getProduct(array))
-
-
-
-function getProduct(product){
-   for(const kanap of product){
-      const{_id, name, imageUrl,description, altTxt} = kanap     
-      const article = addArticle()
-   }
-}
-
-function addArticle(){
-   const itemsArticle = document.createElement ('article')
-   return itemsArticle
-}
-*/
