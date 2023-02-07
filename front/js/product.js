@@ -56,17 +56,43 @@ const createColors = function (color) {
     colorsProduct.innerText = color
 }
 
+const basket = []
 
-function quantity(){
-    const nbr = document.querySelector(`#quantity`)
-    if (nbr.value <= 0 || nbr.value >= 100) {
-      alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
+class product {
+    constructor(id, quantity, color) {
+        this.id = id;
+        this.quantity = quantity;
+        this.color = color
     }
-
 }
 
+function addToBasket(){
+    const quantity = document.querySelector(`#quantity`);
+    const color = document.querySelector(`#colors`) ;
+    const newProduct = new product(id, quantity.value, color.value)
+    if (color.selectedIndex == 0 ) {
+        alert(`Veuillez sélectionner une couleur.`)
+    }
+    else if (quantity.value <= 0 || quantity.value >= 100) {
+        alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
+    }
+    else {
+        basket.push(newProduct)
+    }
+}
 
-document.querySelector(`#addToCart`).addEventListener(`click`, () => quantity())
+document.querySelector(`#addToCart`).addEventListener(`click`, () => addToBasket())
+
+// function quantity2(){
+//    const nbr = document.querySelector(`#quantity`)
+//    if (nbr.value <= 0 || nbr.value >= 100) {
+
+//    }
+
+// }
+
+
+// document.querySelector(`#addToCart`).addEventListener(`change`, () => quantity())
 
 
 
