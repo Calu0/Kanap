@@ -59,10 +59,10 @@ const createColors = function (color) {
 
 
 let basket = window.localStorage.getItem(`basket`);
-if (basket === null){
+if (basket === null) {
     basket = []
- }
-else{
+}
+else {
     basket = JSON.parse(basket)
 }
 
@@ -78,23 +78,24 @@ class product {
     }
 }
 
+
 function addQuantity() {
- const findProduct = basket.find(product => {
-        if (product.id === id && product.color === color.value){
-            product.quantity += quantity.value;
-            console.log(product.quantity, quantity.value)
+    const findProduct = basket.find(product => {
+        if (product.id == id && product.color == color.value) {
+            product.quantity = parseInt(product.quantity) + parseInt(quantity.value)
             return true
-        }
-        else {
+        } 
+        else if (product.id !== id || product.color !== color.value){
             return false
         }
     })
-if(findProduct == true ){
-    return true
-}
-else {
-    return false
-}
+    if (findProduct) { 
+        console.log(basket)   
+        return true
+    }
+    else {
+        return false
+    }
 }
 
 function checkBasket() {
@@ -105,25 +106,25 @@ function checkBasket() {
         alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
     }
     else {
-        return false
+        return true
     }
 }
 
 function generateProduct() {
     const newProduct = new product(id, quantity.value, color.value)
     basket.push(newProduct)
+    sendToLocalStorage()
 }
 
 function sendToLocalStorage() {
     const basketJson = JSON.stringify(basket);
-    window.localStorage.setItem("basket", basketJson)
+    localStorage.setItem("basket", basketJson)
 }
 
 
 function addToBasket() {
-    if (checkBasket() == false && addQuantity() == false) {
+    if (checkBasket() == true && addQuantity() == false) {
         generateProduct()
-        sendToLocalStorage()
         console.log(basket)
     }
 }
