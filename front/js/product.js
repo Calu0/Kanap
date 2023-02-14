@@ -90,6 +90,7 @@ function addQuantity() {
         }
     })
     if (findProduct) { 
+        sendToLocalStorage()
         console.log(basket)   
         return true
     }
@@ -110,15 +111,15 @@ function checkBasket() {
     }
 }
 
+function sendToLocalStorage() {
+    const basketJson = JSON.stringify(basket);
+    localStorage.setItem("basket", basketJson)
+}
+
 function generateProduct() {
     const newProduct = new product(id, quantity.value, color.value)
     basket.push(newProduct)
     sendToLocalStorage()
-}
-
-function sendToLocalStorage() {
-    const basketJson = JSON.stringify(basket);
-    localStorage.setItem("basket", basketJson)
 }
 
 
