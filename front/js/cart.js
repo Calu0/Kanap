@@ -83,15 +83,11 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
   divDeleteProduct.appendChild(deleteProduct)
 
   quantityInput.addEventListener(`change`, () => {
-    quantityInput.value = this.value
-    item.quantity = parseInt(this.value)
+    console.log(quantityInput.value)
+    item.quantity = parseInt(quantityInput.value)
     sendToLocalStorage()
 } )
 
-  deleteProduct.addEventListener(`click`, () => {
-    basket.
-    console.log(basket)
-  })
 }
 
 function getProduct(products) {
