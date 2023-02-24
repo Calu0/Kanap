@@ -22,7 +22,7 @@ fetch(`http://localhost:3000/api/products/`)
 
 
 
-function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, i) {
+function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item) {
 
   const articleParent = document.createElement(`article`)
   articleParent.classList.add(`cart__item`)
@@ -63,9 +63,9 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
 
   const divDeleteProduct = document.createElement(`div`)
   divDeleteProduct.classList.add(`cart__item__content__settings__delete`)
-  const deleteProduct = document.createElement(`p`)
-  deleteProduct.classList.add(`deleteItem`)
-  deleteProduct.innerText = `Supprimer`
+  const deleteBtn = document.createElement(`p`)
+  deleteBtn.classList.add(`deleteItem`)
+  deleteBtn.innerText = `Supprimer`
 
   document.querySelector(`#cart__items`).appendChild(articleParent)
   articleParent.appendChild(divImg)
@@ -80,51 +80,53 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
   divCartSettings.appendChild(divDeleteProduct)
   divAddQuantity.appendChild(quantityProduct)
   divAddQuantity.appendChild(quantityInput)
-  divDeleteProduct.appendChild(deleteProduct)
+  divDeleteProduct.appendChild(deleteBtn)
 
 
-  quantityInput.addEventListener(`change`, () => {
-  if (quantityInput.value <= 0 || quantityInput.value >= 100) {
-    alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
-    quantityInput.value = 1
-    item.quantity = parseInt(quantityInput.value)
-    sendToLocalStorage()
-  }
-  else {
-    item.quantity = parseInt(quantityInput.value)
-    sendToLocalStorage()
-  }
-} )
+changeQuantity(quantityInput, item)  
 
-productDelete(item, deleteProduct, articleParent)
+deleteItem(item, deleteBtn, articleParent)
 
 }
 
 
+function changeQuantity(quantityInput, item){
+  quantityInput.addEventListener(`change`, () => {
+    if (quantityInput.value <= 0 || quantityInput.value >= 100) {
+      alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
+      quantityInput.value = 1
+      item.quantity = parseInt(quantityInput.value)
+      sendToLocalStorage()
+    }
+    else {
+      item.quantity = parseInt(quantityInput.value)
+      sendToLocalStorage()
+    }
+  } )
+}
 
- function productDelete (item, deleteProduct, articleParent){
+ function deleteItem (item, deleteBtn, articleParent){
 
   const toDelete = Array.from(document.querySelectorAll(`.cart__item`))
   
-  deleteProduct.addEventListener(`click`, () => {
+  deleteBtn.addEventListener(`click`, () => {
 
-    for(deleteProduct of toDelete){
+    for(let deleteItm of toDelete){
     
-    if(deleteProduct.dataset.id == item.id && deleteProduct.dataset.color == item.color){   
+    if(deleteItm.dataset.id == item.id && deleteItm.dataset.color == item.color){   
 
       const indexOfbasket = basket.indexOf(item)
-      const indexOfDp = toDelete.indexOf(deleteProduct)
+      const indexOfDp = toDelete.indexOf(deleteItm)
 
       articleParent.remove()
       toDelete.splice(indexOfDp, 1)
       basket.splice(indexOfbasket, 1)
       sendToLocalStorage()
-      console.log(basket)      
+      console.log(`Votre panier à bien été mis à jour !`, basket)      
 
     }
   }})
   
-
 }
 
 
@@ -157,7 +159,7 @@ function showProduct(products) {
     const totalPrice = document.querySelector(`#totalPrice`)
     totalPrice.innerText = sumTotalPrice
 
-    createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, i)
+    createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item)
     
     
   }
