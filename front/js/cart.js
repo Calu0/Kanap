@@ -18,11 +18,11 @@ console.log(`Voici votre panier`, basket)
 
 fetch(`http://localhost:3000/api/products/`)
   .then((response) => response.json())
-  .then((products) => getProduct(products))
+  .then((products) => showProduct(products))
 
 
 
-function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item) {
+function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, i) {
 
   const articleParent = document.createElement(`article`)
   articleParent.classList.add(`cart__item`)
@@ -82,19 +82,60 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
   divAddQuantity.appendChild(quantityInput)
   divDeleteProduct.appendChild(deleteProduct)
 
+
   quantityInput.addEventListener(`change`, () => {
-    console.log(quantityInput.value)
+  if (quantityInput.value <= 0 || quantityInput.value >= 100) {
+    alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
+    quantityInput.value = 1
     item.quantity = parseInt(quantityInput.value)
     sendToLocalStorage()
+  }
+  else {
+    item.quantity = parseInt(quantityInput.value)
+    sendToLocalStorage()
+  }
 } )
+
+productDelete(item, deleteProduct, articleParent)
 
 }
 
-function getProduct(products) {
+
+
+ function productDelete (item, deleteProduct, articleParent){
+
+  const toDelete = Array.from(document.querySelectorAll(`.cart__item`))
+  
+  deleteProduct.addEventListener(`click`, () => {
+
+    for(deleteProduct of toDelete){
+    
+    if(deleteProduct.dataset.id == item.id && deleteProduct.dataset.color == item.color){   
+
+      const indexOfbasket = basket.indexOf(item)
+      const indexOfDp = toDelete.indexOf(deleteProduct)
+
+      articleParent.remove()
+      toDelete.splice(indexOfDp, 1)
+      basket.splice(indexOfbasket, 1)
+      sendToLocalStorage()
+      console.log(basket)      
+
+    }
+  }})
+  
+
+}
+
+
+function showProduct(products) {
 
   console.log(`Ici se trouve les produits récupérés depuis les data du serveur`, products)
+  let i=-1
 
   for (let item of basket) {
+
+    i++
 
     const productbasketId = item.id
     const findId = products.find(product => product._id === productbasketId)
@@ -116,23 +157,10 @@ function getProduct(products) {
     const totalPrice = document.querySelector(`#totalPrice`)
     totalPrice.innerText = sumTotalPrice
 
-    createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item)
+    createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, i)
+    
+    
   }
   
 }
 
-
-
-
-
-/*
-function checkBasket() {
-
-  if (quantity.value <= 0 || quantity.value >= 100) {
-    alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
-  }
-  else {
-    return true
-  }
-}
-*/
