@@ -111,12 +111,12 @@ function changeQuantity(quantityInput, item){
   
   deleteBtn.addEventListener(`click`, () => {
 
-    for(let deleteItm of toDelete){
+    for(let ItemToDelete of toDelete){
     
-    if(deleteItm.dataset.id == item.id && deleteItm.dataset.color == item.color){   
+    if(ItemToDelete.dataset.id == item.id && ItemToDelete.dataset.color == item.color){   
 
       const indexOfbasket = basket.indexOf(item)
-      const indexOfDp = toDelete.indexOf(deleteItm)
+      const indexOfDp = toDelete.indexOf(ItemToDelete)
 
       articleParent.remove()
       toDelete.splice(indexOfDp, 1)
