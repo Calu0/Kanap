@@ -22,7 +22,7 @@ fetch(`http://localhost:3000/api/products/`)
 
 
 
-function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item) {
+function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, products) {
 
   const articleParent = document.createElement(`article`)
   articleParent.classList.add(`cart__item`)
@@ -83,57 +83,62 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
   divDeleteProduct.appendChild(deleteBtn)
 
 
-changeQuantity(quantityInput, item)  
 
-deleteItem(item, deleteBtn, articleParent)
+
+  changeQuantity(quantityInput, item, products)
+  deleteItem(item, deleteBtn, articleParent)
 
 }
 
 
-function changeQuantity(quantityInput, item){
+function changeQuantity(quantityInput, item, products) {
   quantityInput.addEventListener(`change`, () => {
     if (quantityInput.value <= 0 || quantityInput.value >= 100) {
       alert(`La quantité séléctionnée est incorrecte. Veuillez choisir un nombre entre 0 et 100.`)
       quantityInput.value = 1
       item.quantity = parseInt(quantityInput.value)
       sendToLocalStorage()
+      quantityTotal()
     }
     else {
       item.quantity = parseInt(quantityInput.value)
       sendToLocalStorage()
+      quantityTotal()
+      PriceTotal(products)
     }
-  } )
+  })
 }
 
- function deleteItem (item, deleteBtn, articleParent){
+function deleteItem(item, deleteBtn, articleParent) {
 
   const toDelete = Array.from(document.querySelectorAll(`.cart__item`))
-  
+
   deleteBtn.addEventListener(`click`, () => {
 
-    for(let ItemToDelete of toDelete){
-    
-    if(ItemToDelete.dataset.id == item.id && ItemToDelete.dataset.color == item.color){   
+    for (let ItemToDelete of toDelete) {
 
-      const indexOfbasket = basket.indexOf(item)
-      const indexOfDp = toDelete.indexOf(ItemToDelete)
+      if (ItemToDelete.dataset.id == item.id && ItemToDelete.dataset.color == item.color) {
 
-      articleParent.remove()
-      toDelete.splice(indexOfDp, 1)
-      basket.splice(indexOfbasket, 1)
-      sendToLocalStorage()
-      console.log(`Votre panier à bien été mis à jour !`, basket)      
+        const indexOfbasket = basket.indexOf(item)
+        const indexOfDp = toDelete.indexOf(ItemToDelete)
 
+        articleParent.remove()
+        toDelete.splice(indexOfDp, 1)
+        basket.splice(indexOfbasket, 1)
+        sendToLocalStorage()
+        console.log(`Votre panier à bien été mis à jour !`, basket)
+
+      }
     }
-  }})
-  
+  })
+
 }
 
 
 function showProduct(products) {
 
   console.log(`Ici se trouve les produits récupérés depuis les data du serveur`, products)
-  let i=-1
+  let i = -1
 
   for (let item of basket) {
 
@@ -150,19 +155,42 @@ function showProduct(products) {
     const quantityValue = item.quantity
     const priceValue = findId.price
 
-    const sumInitial = 0
-    const sumPrice = 0
 
-    const sumTotalPrice = sumPrice + priceValue
-    const totalQuantity = document.querySelector(`#totalQuantity`)
-    totalQuantity.innerText = quantityValue
-    const totalPrice = document.querySelector(`#totalPrice`)
-    totalPrice.innerText = sumTotalPrice
 
-    createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item)
     
-    
+
+    createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, products)
+
   }
+  quantityTotal()
+  PriceTotal(products)
   
 }
 
+
+function quantityTotal(){
+const totalQuantity = document.querySelector(`#totalQuantity`)
+  let quantityArray = []
+  for(item of basket){
+    quantityArray.push(parseInt(item.quantity))
+    let sum = quantityArray.reduce((a, b) => {
+      return a + b;
+    });
+    totalQuantity.innerText = sum
+  }
+}
+
+function PriceTotal(products){
+  const totalPrice = document.querySelector(`#totalPrice`)
+  let priceArray = []
+  for(item of basket){
+  const productbasketId = item.id
+  const findId = products.find(product => product._id === productbasketId)
+  const priceValue = findId.price
+  priceArray.push(priceValue * parseInt(item.quantity))
+  let sum = priceArray.reduce((a, b) => {
+    return a + b;
+  });
+  totalPrice.innerText = sum 
+}
+}
