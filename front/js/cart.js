@@ -86,7 +86,7 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
 
 
   changeQuantity(quantityInput, item, products)
-  deleteItem(item, deleteBtn, articleParent)
+  deleteItem(item, deleteBtn, articleParent, products)
 
 }
 
@@ -109,7 +109,7 @@ function changeQuantity(quantityInput, item, products) {
   })
 }
 
-function deleteItem(item, deleteBtn, articleParent) {
+function deleteItem(item, deleteBtn, articleParent, products) {
 
   const toDelete = Array.from(document.querySelectorAll(`.cart__item`))
 
@@ -126,6 +126,8 @@ function deleteItem(item, deleteBtn, articleParent) {
         toDelete.splice(indexOfDp, 1)
         basket.splice(indexOfbasket, 1)
         sendToLocalStorage()
+        quantityTotal()
+        PriceTotal(products)
         console.log(`Votre panier à bien été mis à jour !`, basket)
 
       }
@@ -171,19 +173,26 @@ function showProduct(products) {
 function quantityTotal(){
 const totalQuantity = document.querySelector(`#totalQuantity`)
   let quantityArray = []
-  for(item of basket){
+  if(basket.length == 0){
+    totalQuantity.innerText = 0
+  }
+else { for(item of basket){
     quantityArray.push(parseInt(item.quantity))
     let sum = quantityArray.reduce((a, b) => {
       return a + b;
     });
     totalQuantity.innerText = sum
   }
+} 
 }
 
 function PriceTotal(products){
   const totalPrice = document.querySelector(`#totalPrice`)
   let priceArray = []
-  for(item of basket){
+  if(basket.length == 0){
+    totalPrice.innerText = 0
+  }
+ else{ for(item of basket){
   const productbasketId = item.id
   const findId = products.find(product => product._id === productbasketId)
   const priceValue = findId.price
@@ -192,5 +201,6 @@ function PriceTotal(products){
     return a + b;
   });
   totalPrice.innerText = sum 
+}
 }
 }
