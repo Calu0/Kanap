@@ -197,40 +197,88 @@ function PriceTotal(products) {
   }
 }
 
+const cartOrder = document.querySelector(`#cartOrder`)
+
 const firstName = document.querySelector(`#firstName`)
 const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
 const lastName = document.querySelector(`#lastName`)
 const lastNameErrorMsg = document.querySelector(`#lastNameErrorMsg`)
 const address = document.querySelector(`#address`)
-const addressNameErrorMsg = document.querySelector(`#addressErrorMsg`)
+const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
 const city = document.querySelector(`#city`)
-const cityNameErrorMsg = document.querySelector(`#cityErrorMsg`)
+const cityErrorMsg = document.querySelector(`#cityErrorMsg`)
 const email = document.querySelector(`#email`)
-const emailtNameErrorMsg = document.querySelector(`#emailErrorMsg`)
-const submitOrder = document.querySelector(`order`)
+const emailtErrorMsg = document.querySelector(`#emailErrorMsg`)
+const submitOrder = document.querySelector(`#order`)
 
-const containsNumber = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+const validName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
+function checkFirstName(){
 firstName.addEventListener(`input`, () => {
-  if(containsNumber.test(firstName.value) == true || firstName.value == null){
+  if(validName.test(firstName.value) == true || firstName.value == null){
     firstNameErrorMsg.innerText = ``
     return true
   }
   else {
-    firstNameErrorMsg.innerText =  `Prénom non valide`
+    firstNameErrorMsg.innerText =  `Prénom non valide.`
     return false
   }
 })
+}
 
+function checkLastName(){
 lastName.addEventListener(`input`, () => {
-  if(containsNumber.test(lastName.value) == true || lastName.value == null){
+  if(validName.test(lastName.value) == true || lastName.value == null){
     lastNameErrorMsg.innerText = ``
     return true
   }
   else {
-    lastNameErrorMsg.innerText =  `Prénom non valide`
+    lastNameErrorMsg.innerText =  `Nom non valide.`
     return false
   }
 })
+}
 
+function checkcity(){
+city.addEventListener(`input`, () => {
+  if(validName.test(city.value) == true || city.value == null){
+    cityErrorMsg.innerText = ``
+    return true
+  }
+  else {
+    cityErrorMsg.innerText =  `Ville non valide.`
+    return false
+  }
+})
+}
+
+function checkEmail(){
+email.addEventListener(`input`, () => {
+  if(validEmail.test(email.value) == true || email.value == null){
+    emailErrorMsg.innerText = ``
+    return true
+  }
+  else {
+    emailErrorMsg.innerText =  `Email non valide.`
+    return false
+  }
+})
+}
+
+checkFirstName()
+checkLastName()
+checkcity()
+checkEmail()
+
+function submitForm(submit){
+submit.preventDefault();
+}
+
+submitOrder.addEventListener(`submit`, () => {
+  if(checkFirstName() == false || checkLastName() == false || checkcity() == false || checkEmail() == false){
+  alert(`Formulaire non valide, veuillez remplir les champs concernés correctement.`)
+  submitForm(submit)
+}
+})
 
