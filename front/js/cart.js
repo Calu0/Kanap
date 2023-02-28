@@ -82,9 +82,6 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
   divAddQuantity.appendChild(quantityInput)
   divDeleteProduct.appendChild(deleteBtn)
 
-
-
-
   changeQuantity(quantityInput, item, products)
   deleteItem(item, deleteBtn, articleParent, products)
 
@@ -99,6 +96,7 @@ function changeQuantity(quantityInput, item, products) {
       item.quantity = parseInt(quantityInput.value)
       sendToLocalStorage()
       quantityTotal()
+      PriceTotal(products)
     }
     else {
       item.quantity = parseInt(quantityInput.value)
@@ -139,17 +137,12 @@ function deleteItem(item, deleteBtn, articleParent, products) {
 
 function showProduct(products) {
 
-  console.log(`Ici se trouve les produits récupérés depuis les data du serveur`, products)
-  let i = -1
+  console.log(`Ici se trouve l'entièreté des produits disponibles`, products)
 
   for (let item of basket) {
 
-    i++
-
     const productbasketId = item.id
     const findId = products.find(product => product._id === productbasketId)
-
-
     const imgValue = findId.imageUrl
     const imgAltValue = findId.altTxt
     const titleValue = findId.name
@@ -157,50 +150,87 @@ function showProduct(products) {
     const quantityValue = item.quantity
     const priceValue = findId.price
 
-
-
-    
-
     createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, products)
 
   }
+
   quantityTotal()
   PriceTotal(products)
-  
+
 }
 
 
-function quantityTotal(){
-const totalQuantity = document.querySelector(`#totalQuantity`)
+function quantityTotal() {
+  const totalQuantity = document.querySelector(`#totalQuantity`)
   let quantityArray = []
-  if(basket.length == 0){
+  if (basket.length == 0) {
     totalQuantity.innerText = 0
   }
-else { for(item of basket){
-    quantityArray.push(parseInt(item.quantity))
-    let sum = quantityArray.reduce((a, b) => {
-      return a + b;
-    });
-    totalQuantity.innerText = sum
+  else {
+    for (item of basket) {
+      quantityArray.push(parseInt(item.quantity))
+      let sum = quantityArray.reduce((a, b) => {
+        return a + b;
+      });
+      totalQuantity.innerText = sum
+    }
   }
-} 
 }
 
-function PriceTotal(products){
+function PriceTotal(products) {
   const totalPrice = document.querySelector(`#totalPrice`)
   let priceArray = []
-  if(basket.length == 0){
+  if (basket.length == 0) {
     totalPrice.innerText = 0
   }
- else{ for(item of basket){
-  const productbasketId = item.id
-  const findId = products.find(product => product._id === productbasketId)
-  const priceValue = findId.price
-  priceArray.push(priceValue * parseInt(item.quantity))
-  let sum = priceArray.reduce((a, b) => {
-    return a + b;
-  });
-  totalPrice.innerText = sum 
+  else {
+    for (item of basket) {
+      const productbasketId = item.id
+      const findId = products.find(product => product._id === productbasketId)
+      const priceValue = findId.price
+      priceArray.push(priceValue * parseInt(item.quantity))
+      let sum = priceArray.reduce((a, b) => {
+        return a + b;
+      });
+      totalPrice.innerText = sum
+    }
+  }
 }
-}
-}
+
+const firstName = document.querySelector(`#firstName`)
+const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
+const lastName = document.querySelector(`#lastName`)
+const lastNameErrorMsg = document.querySelector(`#lastNameErrorMsg`)
+const address = document.querySelector(`#address`)
+const addressNameErrorMsg = document.querySelector(`#addressErrorMsg`)
+const city = document.querySelector(`#city`)
+const cityNameErrorMsg = document.querySelector(`#cityErrorMsg`)
+const email = document.querySelector(`#email`)
+const emailtNameErrorMsg = document.querySelector(`#emailErrorMsg`)
+const submitOrder = document.querySelector(`order`)
+
+const containsNumber = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+
+firstName.addEventListener(`input`, () => {
+  if(containsNumber.test(firstName.value) == true || firstName.value == null){
+    firstNameErrorMsg.innerText = ``
+    return true
+  }
+  else {
+    firstNameErrorMsg.innerText =  `Prénom non valide`
+    return false
+  }
+})
+
+lastName.addEventListener(`input`, () => {
+  if(containsNumber.test(lastName.value) == true || lastName.value == null){
+    lastNameErrorMsg.innerText = ``
+    return true
+  }
+  else {
+    lastNameErrorMsg.innerText =  `Prénom non valide`
+    return false
+  }
+})
+
+
