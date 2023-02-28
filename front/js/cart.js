@@ -271,14 +271,15 @@ checkLastName()
 checkcity()
 checkEmail()
 
-function submitForm(submit){
-submit.preventDefault();
-}
 
-submitOrder.addEventListener(`submit`, () => {
+
+submitOrder.addEventListener(`submit`, (e) => {
   if(checkFirstName() == false || checkLastName() == false || checkcity() == false || checkEmail() == false){
   alert(`Formulaire non valide, veuillez remplir les champs concernés correctement.`)
-  submitForm(submit)
+  e.preventDefault()
+}
+else{
+  e.preventDefault()
 }
 })
 
