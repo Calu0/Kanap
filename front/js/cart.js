@@ -1,5 +1,5 @@
 
-// Récupération du panier depuis le local storage
+// Récupération ou création du panier depuis le local storage
 const getBasket = localStorage.getItem(`basket`)
 if (getBasket === null) {
   basket = []
@@ -17,7 +17,7 @@ function sendToLocalStorage() {
 console.log(`Voici votre panier`, basket)
 
 
-// Récupération des produits depuis l'api
+// Récupération des données des produits depuis l'api
 fetch(`http://localhost:3000/api/products/`)
   .then((response) => response.json())
   .then((products) => showProduct(products))
@@ -202,7 +202,6 @@ function PriceTotal(products) {
 }
 
 
-
 const address = document.querySelector(`#address`)
 const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
 
@@ -293,25 +292,58 @@ checkLastName()
 checkcity()
 checkEmail()
 
-async function postOrder (){
-    await fetch('http://localhost:3000/api/products/post/contact', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8'
-    },
-    body: JSON.stringify(contact)
-  });
+// création de l'objet qui contiendra toutes les informations du formulaire qui seront envoyé avec la fonction fetch vers le serveur 
+class contact {
+  constructor(firstName, lastName, address, city, email) {
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.address = address;
+      this.city = city;
+      this.email = email;
+  }
 }
 
 
+// Création du tableau qui contient les ID de chaque objet présent dans le panier
+const arrayId = function (){
+  const Ids = []
+  for(item of basket){
+    Ids.push(item.id)
+  }
+  return Ids
+}
+
+//Fonction fetch pour envoyer les données de la commande (formulaire + id des produits dans le paniers)
+//Permets de récupérer l'id de la commande avec la réponse du serveur
+
+function postOrder (body){
+   fetch('http://localhost:3000/api/products/order', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  })
+  .then((r) => r.json())
+  .then((data) => 
+  window.location.href=`http://127.0.0.1:5500/front/html/confirmation.html` + `?orderId=${data.orderId}` 
+  )
+}
+
+// Bouton pour envoyer la commande avec la requête post ci-dessus
 const submitOrder = document.querySelector(`#order`)
 submitOrder.addEventListener("click", (e) => { 
   e.preventDefault()
   if(checkFirstName() == true && checkLastName() == true && checkcity() == true && checkEmail() == true ){
-    console.log(`Commande enregistrée`)
+    const order = new contact (firstName.value, lastName.value, address.value, city.value, email.value)
+    const body = {
+     contact : order,
+     products : arrayId()
+    }
+    postOrder(body)
+    console.log(`Commande enregistrée`, JSON.stringify(body))
   }
   else{
-    console.log(`petit flop`)
     alert(`Formulaire de contact non valide, veuillez remplir les champs concernés correctement.`)
   }
 })
