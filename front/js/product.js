@@ -94,8 +94,7 @@ function addQuantity() {
         }
     })
     if (findProduct) { 
-        sendToLocalStorage()
-        console.log(basket)   
+        sendToLocalStorage() 
         return true
     }
     else {
@@ -134,7 +133,6 @@ function generateProduct() {
 function addToBasket() {
     if (checkBasket() == true && addQuantity() == false) {
         generateProduct()
-        console.log(basket)
     }
 }
 

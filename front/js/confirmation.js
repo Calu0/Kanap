@@ -9,7 +9,6 @@ const orderId = url.searchParams.get("orderId")
 function showOrderId(){
 const spanId = document.querySelector(`#orderId`)
 spanId.innerText = orderId
-console.log(`Commande validé ! voici votre numéro de commande : ` + orderId)
 }
 
 // fonction qui permet de vider le local storage et le panier
