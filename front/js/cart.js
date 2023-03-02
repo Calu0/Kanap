@@ -203,7 +203,7 @@ function PriceTotal(products) {
 
 
 
-// création des Regex pour les noms et l'email, 
+// création des Regex  
 const validName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
 const validAdress = /^(\d+) ?([A-Za-z](?= ))? (.*?) ([^ ]+?) ?((?<= )APT)? ?((?<= )\d*)?$/
 const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -250,8 +250,10 @@ function checkLastName() {
 
 // fonction qui vérifier que l'adresse soit valide
 function checkAdress() {
+
   const address = document.querySelector(`#address`)
   const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
+
   address.addEventListener(`input`, () => {
     if (validAdress.test(address.value) == true || address.value == null) {
       addressErrorMsg.innerText = ``
@@ -265,11 +267,12 @@ function checkAdress() {
   }
 }
 
-
 //fonction qui vérifie que la ville soit valide
 function checkCity() {
+
   const city = document.querySelector(`#city`)
   const cityErrorMsg = document.querySelector(`#cityErrorMsg`)
+
   city.addEventListener(`input`, () => {
     if (validName.test(city.value) == true || city.value == null) {
       cityErrorMsg.innerText = ``
@@ -284,7 +287,7 @@ function checkCity() {
 }
 
 
-//fonction qui vérifie que l'email' soit valide
+//fonction qui vérifie que l'email soit valide
 function checkEmail() {
 
   const email = document.querySelector(`#email`)
@@ -319,7 +322,6 @@ class contact {
     this.email = email;
   }
 }
-
 
 // Création du tableau qui contient les ID de chaque objet présent dans le panier
 const arrayId = function () {
