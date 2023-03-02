@@ -202,9 +202,6 @@ function PriceTotal(products) {
 }
 
 
-//sélection du formulaire de contact
-const cartOrder = document.querySelector(`#cartOrder`)
-
 
 const address = document.querySelector(`#address`)
 const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
@@ -214,10 +211,13 @@ const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
 const validName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
 const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
+
 //fonction qui vérifie que le prénom est valide
 function checkFirstName(){
+
 const firstName = document.querySelector(`#firstName`)
 const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
+
 firstName.addEventListener(`input`, () => {
   if(validName.test(firstName.value) == true || firstName.value == null){
     firstNameErrorMsg.innerText = ``
@@ -226,12 +226,17 @@ firstName.addEventListener(`input`, () => {
     firstNameErrorMsg.innerText =  `Prénom non valide.`
   }
 })
+if(validName.test(firstName.value) == true || firstName.value == null){
+  return true
+}
 }
 
 //fonction qui vérifie que le nom est valide
 function checkLastName(){
+
   const lastName = document.querySelector(`#lastName`)
   const lastNameErrorMsg = document.querySelector(`#lastNameErrorMsg`)
+
 lastName.addEventListener(`input`, () => {
   if(validName.test(lastName.value) == true || lastName.value == null){
     lastNameErrorMsg.innerText = ``
@@ -240,6 +245,10 @@ lastName.addEventListener(`input`, () => {
     lastNameErrorMsg.innerText =  `Nom non valide.`
   }
 })
+if(validName.test(lastName.value) == true || lastName.value == null){
+  return true
+}
+
 }
 
 //fonction qui vérifie que la ville est valide
@@ -254,10 +263,15 @@ city.addEventListener(`input`, () => {
     cityErrorMsg.innerText =  `Ville non valide.`
   }
 })
+if(validName.test(city.value) == true || city.value == null){
+  return true
 }
+}
+
 
 //fonction qui vérifie que l'email' est valide
 function checkEmail(){
+
   const email = document.querySelector(`#email`)
   const emailErrorMsg = document.querySelector(`#emailErrorMsg`)
 
@@ -269,13 +283,15 @@ email.addEventListener(`input`, () => {
     emailErrorMsg.innerText =  `Email non valide.`
   }
 })
+if(validEmail.test(email.value) == true || email.value == null){
+  return true
+}
 }
 
 checkFirstName()
 checkLastName()
 checkcity()
 checkEmail()
-
 
 async function postOrder (){
     await fetch('http://localhost:3000/api/products/post/contact', {
@@ -287,19 +303,16 @@ async function postOrder (){
   });
 }
 
-function caca(){
-if(checkFirstName() == true){
-  console.log(`plop la guilde`)
-}
-else{
-  console.log(`petit flop`)
-}
-}
-
 
 const submitOrder = document.querySelector(`#order`)
-  submitOrder.addEventListener(`submit`, (e) => {
-    e.preventDefault();
-    e.stopPropagation()
-    })
+submitOrder.addEventListener("click", (e) => { 
+  e.preventDefault()
+  if(checkFirstName() == true && checkLastName() == true && checkcity() == true && checkEmail() == true ){
+    console.log(`Commande enregistrée`)
+  }
+  else{
+    console.log(`petit flop`)
+    alert(`Formulaire de contact non valide, veuillez remplir les champs concernés correctement.`)
+  }
+})
   
