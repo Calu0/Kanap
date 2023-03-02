@@ -212,79 +212,79 @@ const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
 
 //fonction qui vérifie que le prénom est valide
-function checkFirstName(){
+function checkFirstName() {
 
-const firstName = document.querySelector(`#firstName`)
-const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
+  const firstName = document.querySelector(`#firstName`)
+  const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
 
-firstName.addEventListener(`input`, () => {
-  if(validName.test(firstName.value) == true || firstName.value == null){
-    firstNameErrorMsg.innerText = ``
+  firstName.addEventListener(`input`, () => {
+    if (validName.test(firstName.value) == true || firstName.value == null) {
+      firstNameErrorMsg.innerText = ``
+    }
+    else {
+      firstNameErrorMsg.innerText = `Prénom non valide.`
+    }
+  })
+  if (validName.test(firstName.value) == true || firstName.value == null) {
+    return true
   }
-  else {
-    firstNameErrorMsg.innerText =  `Prénom non valide.`
-  }
-})
-if(validName.test(firstName.value) == true || firstName.value == null){
-  return true
-}
 }
 
 //fonction qui vérifie que le nom est valide
-function checkLastName(){
+function checkLastName() {
 
   const lastName = document.querySelector(`#lastName`)
   const lastNameErrorMsg = document.querySelector(`#lastNameErrorMsg`)
 
-lastName.addEventListener(`input`, () => {
-  if(validName.test(lastName.value) == true || lastName.value == null){
-    lastNameErrorMsg.innerText = ``
+  lastName.addEventListener(`input`, () => {
+    if (validName.test(lastName.value) == true || lastName.value == null) {
+      lastNameErrorMsg.innerText = ``
+    }
+    else {
+      lastNameErrorMsg.innerText = `Nom non valide.`
+    }
+  })
+  if (validName.test(lastName.value) == true || lastName.value == null) {
+    return true
   }
-  else {
-    lastNameErrorMsg.innerText =  `Nom non valide.`
-  }
-})
-if(validName.test(lastName.value) == true || lastName.value == null){
-  return true
-}
 
 }
 
 //fonction qui vérifie que la ville est valide
-function checkcity(){
+function checkcity() {
   const city = document.querySelector(`#city`)
   const cityErrorMsg = document.querySelector(`#cityErrorMsg`)
-city.addEventListener(`input`, () => {
-  if(validName.test(city.value) == true || city.value == null){
-    cityErrorMsg.innerText = ``
+  city.addEventListener(`input`, () => {
+    if (validName.test(city.value) == true || city.value == null) {
+      cityErrorMsg.innerText = ``
+    }
+    else {
+      cityErrorMsg.innerText = `Ville non valide.`
+    }
+  })
+  if (validName.test(city.value) == true || city.value == null) {
+    return true
   }
-  else {
-    cityErrorMsg.innerText =  `Ville non valide.`
-  }
-})
-if(validName.test(city.value) == true || city.value == null){
-  return true
-}
 }
 
 
 //fonction qui vérifie que l'email' est valide
-function checkEmail(){
+function checkEmail() {
 
   const email = document.querySelector(`#email`)
   const emailErrorMsg = document.querySelector(`#emailErrorMsg`)
 
-email.addEventListener(`input`, () => {
-  if(validEmail.test(email.value) == true || email.value == null){
-    emailErrorMsg.innerText = ``
+  email.addEventListener(`input`, () => {
+    if (validEmail.test(email.value) == true || email.value == null) {
+      emailErrorMsg.innerText = ``
+    }
+    else {
+      emailErrorMsg.innerText = `Email non valide.`
+    }
+  })
+  if (validEmail.test(email.value) == true || email.value == null) {
+    return true
   }
-  else {
-    emailErrorMsg.innerText =  `Email non valide.`
-  }
-})
-if(validEmail.test(email.value) == true || email.value == null){
-  return true
-}
 }
 
 checkFirstName()
@@ -295,19 +295,19 @@ checkEmail()
 // création de l'objet qui contiendra toutes les informations du formulaire qui seront envoyé avec la fonction fetch vers le serveur 
 class contact {
   constructor(firstName, lastName, address, city, email) {
-      this.firstName = firstName;
-      this.lastName = lastName;
-      this.address = address;
-      this.city = city;
-      this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.address = address;
+    this.city = city;
+    this.email = email;
   }
 }
 
 
 // Création du tableau qui contient les ID de chaque objet présent dans le panier
-const arrayId = function (){
+const arrayId = function () {
   const Ids = []
-  for(item of basket){
+  for (item of basket) {
     Ids.push(item.id)
   }
   return Ids
@@ -315,36 +315,35 @@ const arrayId = function (){
 
 //Fonction fetch pour envoyer les données de la commande (formulaire + id des produits dans le paniers)
 //Permets de récupérer l'id de la commande avec la réponse du serveur
-
-function postOrder (body){
-   fetch('http://localhost:3000/api/products/order', {
+function postOrder(body) {
+  fetch('http://localhost:3000/api/products/order', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   })
-  .then((r) => r.json())
-  .then((data) => 
-  window.location.href=`http://127.0.0.1:5500/front/html/confirmation.html` + `?orderId=${data.orderId}` 
-  )
+    .then((r) => r.json())
+    .then((data) =>
+      window.location.href = `http://127.0.0.1:5500/front/html/confirmation.html` + `?orderId=${data.orderId}`
+    )
 }
 
 // Bouton pour envoyer la commande avec la requête post ci-dessus
 const submitOrder = document.querySelector(`#order`)
-submitOrder.addEventListener("click", (e) => { 
+submitOrder.addEventListener("click", (e) => {
   e.preventDefault()
-  if(checkFirstName() == true && checkLastName() == true && checkcity() == true && checkEmail() == true ){
-    const order = new contact (firstName.value, lastName.value, address.value, city.value, email.value)
+  if (checkFirstName() == true && checkLastName() == true && checkcity() == true && checkEmail() == true) {
+    const order = new contact(firstName.value, lastName.value, address.value, city.value, email.value)
     const body = {
-     contact : order,
-     products : arrayId()
+      contact: order,
+      products: arrayId()
     }
     postOrder(body)
     console.log(`Commande enregistrée`, JSON.stringify(body))
   }
-  else{
+  else {
     alert(`Formulaire de contact non valide, veuillez remplir les champs concernés correctement.`)
   }
 })
-  
+
