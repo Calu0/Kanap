@@ -14,8 +14,6 @@ function sendToLocalStorage() {
   localStorage.setItem("basket", basketJson)
 }
 
-console.log(`Voici votre panier`, basket)
-
 
 //Récupération des données des produits depuis l'api
 fetch(`http://localhost:3000/api/products/`)
@@ -129,7 +127,6 @@ function deleteItem(item, deleteBtn, articleParent, products) {
         sendToLocalStorage()
         quantityTotal()
         priceTotal(products)
-        console.log(`Votre panier à bien été mis à jour !`, basket)
 
       }
     }
@@ -139,8 +136,6 @@ function deleteItem(item, deleteBtn, articleParent, products) {
 
 //fonction pour pouvoir afficher chaque produit présent dans le panier 
 function showProduct(products) {
-
-  console.log(`Ici se trouve l'entièreté des produits disponibles`, products)
 
   for (let item of basket) {
 
@@ -312,6 +307,7 @@ checkAdress()
 checkCity()
 checkEmail()
 
+
 // création de l'objet qui contiendra toutes les informations du formulaire qui seront envoyé avec la fonction fetch vers le serveur 
 class contact {
   constructor(firstName, lastName, address, city, email) {
@@ -360,7 +356,6 @@ submitOrder.addEventListener("click", (e) => {
       products: arrayId()
     }
     postOrder(body)
-    console.log(`Commande enregistrée`, JSON.stringify(body))
   }
   else {
     alert(`Formulaire de contact non valide, veuillez remplir les champs concernés correctement.`)
