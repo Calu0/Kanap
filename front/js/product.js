@@ -9,7 +9,7 @@ fetch(`http://localhost:3000/api/products/${id}`)
     .then((response) => response.json())
     .then((data) => getProduct(data))
 
-//Affichage du produits en associant les éléments créés dans le DOM avec les données récupéré depuis l'api
+//Affichage du produit en associant les éléments créés dans le DOM avec les données récupérées depuis l'api
 function getProduct(kanap) {
     const imgValue = kanap.imageUrl
     const altValue = kanap.altTxt
@@ -82,7 +82,7 @@ class product {
     }
 }
 
-//Fonction qui permets de modifier la quantité voulu du produit dans le panier et le local storage
+//Fonction qui permet de modifier la quantité voulu du produit dans le panier et le local storage
 function addQuantity() {
     const findProduct = basket.find(product => {
         if (product.id == id && product.color == color.value) {
@@ -117,7 +117,7 @@ function checkBasket() {
     }
 }
 
-//Permet d'envoyer le panier vers le localStorage
+//Envoi le panier vers le localStorage
 function sendToLocalStorage() {
     const basketJson = JSON.stringify(basket);
     localStorage.setItem("basket", basketJson)
