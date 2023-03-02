@@ -202,16 +202,14 @@ function PriceTotal(products) {
 }
 
 
-const address = document.querySelector(`#address`)
-const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
 
-
-// création des Regex pour les noms et l'email, pas de regex pour l'adresse car il est plus intéressant d'utiliser une api
+// création des Regex pour les noms et l'email, 
 const validName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
+const validAdress = /^(\d+) ?([A-Za-z](?= ))? (.*?) ([^ ]+?) ?((?<= )APT)? ?((?<= )\d*)?$/
 const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
 
-//fonction qui vérifie que le prénom est valide
+//fonction qui vérifie que le prénom soit valide
 function checkFirstName() {
 
   const firstName = document.querySelector(`#firstName`)
@@ -230,7 +228,7 @@ function checkFirstName() {
   }
 }
 
-//fonction qui vérifie que le nom est valide
+//fonction qui vérifie que le nom soit valide
 function checkLastName() {
 
   const lastName = document.querySelector(`#lastName`)
@@ -250,8 +248,26 @@ function checkLastName() {
 
 }
 
-//fonction qui vérifie que la ville est valide
-function checkcity() {
+// fonction qui vérifier que l'adresse soit valide
+function checkAdress() {
+  const address = document.querySelector(`#address`)
+  const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
+  address.addEventListener(`input`, () => {
+    if (validAdress.test(address.value) == true || address.value == null) {
+      addressErrorMsg.innerText = ``
+    }
+    else {
+      addressErrorMsg.innerText = `Adresse non valide.`
+    }
+  })
+  if (validAdress.test(address.value) == true || address.value == null) {
+    return true
+  }
+}
+
+
+//fonction qui vérifie que la ville soit valide
+function checkCity() {
   const city = document.querySelector(`#city`)
   const cityErrorMsg = document.querySelector(`#cityErrorMsg`)
   city.addEventListener(`input`, () => {
@@ -268,7 +284,7 @@ function checkcity() {
 }
 
 
-//fonction qui vérifie que l'email' est valide
+//fonction qui vérifie que l'email' soit valide
 function checkEmail() {
 
   const email = document.querySelector(`#email`)
@@ -289,7 +305,8 @@ function checkEmail() {
 
 checkFirstName()
 checkLastName()
-checkcity()
+checkAdress()
+checkCity()
 checkEmail()
 
 // création de l'objet qui contiendra toutes les informations du formulaire qui seront envoyé avec la fonction fetch vers le serveur 
@@ -330,10 +347,11 @@ function postOrder(body) {
 }
 
 // Bouton pour envoyer la commande avec la requête post ci-dessus
+function submitOrderBtn() {
 const submitOrder = document.querySelector(`#order`)
 submitOrder.addEventListener("click", (e) => {
   e.preventDefault()
-  if (checkFirstName() == true && checkLastName() == true && checkcity() == true && checkEmail() == true) {
+  if (checkFirstName() == true && checkLastName() == true  && checkAdress() == true && checkCity() == true && checkEmail() == true) {
     const order = new contact(firstName.value, lastName.value, address.value, city.value, email.value)
     const body = {
       contact: order,
@@ -346,4 +364,6 @@ submitOrder.addEventListener("click", (e) => {
     alert(`Formulaire de contact non valide, veuillez remplir les champs concernés correctement.`)
   }
 })
+}
 
+submitOrderBtn()
