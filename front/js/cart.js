@@ -116,12 +116,12 @@ function deleteItem(item, deleteBtn, articleParent, products) {
 
   deleteBtn.addEventListener(`click`, () => {
 
-    for (let ItemToDelete of toDelete) {
+    for (let itemToDelete of toDelete) {
 
-      if (ItemToDelete.dataset.id == item.id && ItemToDelete.dataset.color == item.color) {
+      if (itemToDelete.dataset.id == item.id && itemToDelete.dataset.color == item.color) {
 
         const indexOfbasket = basket.indexOf(item)
-        const indexOfDp = toDelete.indexOf(ItemToDelete)
+        const indexOfDp = toDelete.indexOf(itemToDelete)
 
         articleParent.remove()
         toDelete.splice(indexOfDp, 1)
