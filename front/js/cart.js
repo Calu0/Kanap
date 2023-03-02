@@ -8,7 +8,7 @@ else {
   basket = JSON.parse(getBasket)
 }
 
-// Fonction pour envoyer le panier vers le local storage
+//Fonction pour envoyer le panier vers le local storage
 function sendToLocalStorage() {
   const basketJson = JSON.stringify(basket);
   localStorage.setItem("basket", basketJson)
@@ -17,13 +17,13 @@ function sendToLocalStorage() {
 console.log(`Voici votre panier`, basket)
 
 
-// Récupération des données des produits depuis l'api
+//Récupération des données des produits depuis l'api
 fetch(`http://localhost:3000/api/products/`)
   .then((response) => response.json())
   .then((products) => showProduct(products))
 
 
-// Création du produit dans le Dom
+//Création du produit dans le DOM
 function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, products) {
 
   const articleParent = document.createElement(`article`)
@@ -98,18 +98,18 @@ function changeQuantity(quantityInput, item, products) {
       item.quantity = parseInt(quantityInput.value)
       sendToLocalStorage()
       quantityTotal()
-      PriceTotal(products)
+      priceTotal(products)
     }
     else {
       item.quantity = parseInt(quantityInput.value)
       sendToLocalStorage()
       quantityTotal()
-      PriceTotal(products)
+      priceTotal(products)
     }
   })
 }
 
-// fonction pour pouvoir supprimer un produit
+//fonction pour pouvoir supprimer un produit
 function deleteItem(item, deleteBtn, articleParent, products) {
 
   const toDelete = Array.from(document.querySelectorAll(`.cart__item`))
@@ -128,7 +128,7 @@ function deleteItem(item, deleteBtn, articleParent, products) {
         basket.splice(indexOfbasket, 1)
         sendToLocalStorage()
         quantityTotal()
-        PriceTotal(products)
+        priceTotal(products)
         console.log(`Votre panier à bien été mis à jour !`, basket)
 
       }
@@ -158,7 +158,7 @@ function showProduct(products) {
   }
 
   quantityTotal()
-  PriceTotal(products)
+  priceTotal(products)
 
 }
 
@@ -181,7 +181,7 @@ function quantityTotal() {
 }
 
 //fonction qui affiche le prix total 
-function PriceTotal(products) {
+function priceTotal(products) {
   const totalPrice = document.querySelector(`#totalPrice`)
   let priceArray = []
   if (basket.length == 0) {
