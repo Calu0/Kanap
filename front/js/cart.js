@@ -1,5 +1,5 @@
 
-
+// Récupération du panier depuis le local storage
 const getBasket = localStorage.getItem(`basket`)
 if (getBasket === null) {
   basket = []
@@ -8,7 +8,7 @@ else {
   basket = JSON.parse(getBasket)
 }
 
-
+// Fonction pour envoyer le panier vers le local storage
 function sendToLocalStorage() {
   const basketJson = JSON.stringify(basket);
   localStorage.setItem("basket", basketJson)
@@ -16,12 +16,14 @@ function sendToLocalStorage() {
 
 console.log(`Voici votre panier`, basket)
 
+
+// Récupération des produits depuis l'api
 fetch(`http://localhost:3000/api/products/`)
   .then((response) => response.json())
   .then((products) => showProduct(products))
 
 
-
+// Création du produit dans le Dom
 function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, products) {
 
   const articleParent = document.createElement(`article`)
@@ -87,7 +89,7 @@ function createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue
 
 }
 
-
+//fonction pour changer la quantité d'un produit
 function changeQuantity(quantityInput, item, products) {
   quantityInput.addEventListener(`change`, () => {
     if (quantityInput.value <= 0 || quantityInput.value >= 100) {
@@ -107,6 +109,7 @@ function changeQuantity(quantityInput, item, products) {
   })
 }
 
+// fonction pour pouvoir supprimer un produit
 function deleteItem(item, deleteBtn, articleParent, products) {
 
   const toDelete = Array.from(document.querySelectorAll(`.cart__item`))
@@ -134,7 +137,7 @@ function deleteItem(item, deleteBtn, articleParent, products) {
 
 }
 
-
+//fonction pour pouvoir afficher chaque produit présent dans le panier 
 function showProduct(products) {
 
   console.log(`Ici se trouve l'entièreté des produits disponibles`, products)
@@ -159,7 +162,7 @@ function showProduct(products) {
 
 }
 
-
+//fonction qui affiche la quantité totale de produit présent dans le panier
 function quantityTotal() {
   const totalQuantity = document.querySelector(`#totalQuantity`)
   let quantityArray = []
@@ -177,6 +180,7 @@ function quantityTotal() {
   }
 }
 
+//fonction qui affiche le prix total 
 function PriceTotal(products) {
   const totalPrice = document.querySelector(`#totalPrice`)
   let priceArray = []
@@ -197,71 +201,72 @@ function PriceTotal(products) {
   }
 }
 
+
+//sélection du formulaire de contact
 const cartOrder = document.querySelector(`#cartOrder`)
 
-const firstName = document.querySelector(`#firstName`)
-const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
-const lastName = document.querySelector(`#lastName`)
-const lastNameErrorMsg = document.querySelector(`#lastNameErrorMsg`)
+
 const address = document.querySelector(`#address`)
 const addressErrorMsg = document.querySelector(`#addressErrorMsg`)
-const city = document.querySelector(`#city`)
-const cityErrorMsg = document.querySelector(`#cityErrorMsg`)
-const email = document.querySelector(`#email`)
-const emailtErrorMsg = document.querySelector(`#emailErrorMsg`)
-const submitOrder = document.querySelector(`#order`)
 
+
+// création des Regex pour les noms et l'email, pas de regex pour l'adresse car il est plus intéressant d'utiliser une api
 const validName = /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
 const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 
+//fonction qui vérifie que le prénom est valide
 function checkFirstName(){
+const firstName = document.querySelector(`#firstName`)
+const firstNameErrorMsg = document.querySelector(`#firstNameErrorMsg`)
 firstName.addEventListener(`input`, () => {
   if(validName.test(firstName.value) == true || firstName.value == null){
     firstNameErrorMsg.innerText = ``
-    return true
   }
   else {
     firstNameErrorMsg.innerText =  `Prénom non valide.`
-    return false
   }
 })
 }
 
+//fonction qui vérifie que le nom est valide
 function checkLastName(){
+  const lastName = document.querySelector(`#lastName`)
+  const lastNameErrorMsg = document.querySelector(`#lastNameErrorMsg`)
 lastName.addEventListener(`input`, () => {
   if(validName.test(lastName.value) == true || lastName.value == null){
     lastNameErrorMsg.innerText = ``
-    return true
   }
   else {
     lastNameErrorMsg.innerText =  `Nom non valide.`
-    return false
   }
 })
 }
 
+//fonction qui vérifie que la ville est valide
 function checkcity(){
+  const city = document.querySelector(`#city`)
+  const cityErrorMsg = document.querySelector(`#cityErrorMsg`)
 city.addEventListener(`input`, () => {
   if(validName.test(city.value) == true || city.value == null){
     cityErrorMsg.innerText = ``
-    return true
   }
   else {
     cityErrorMsg.innerText =  `Ville non valide.`
-    return false
   }
 })
 }
 
+//fonction qui vérifie que l'email' est valide
 function checkEmail(){
+  const email = document.querySelector(`#email`)
+  const emailErrorMsg = document.querySelector(`#emailErrorMsg`)
+
 email.addEventListener(`input`, () => {
   if(validEmail.test(email.value) == true || email.value == null){
     emailErrorMsg.innerText = ``
-    return true
   }
   else {
     emailErrorMsg.innerText =  `Email non valide.`
-    return false
   }
 })
 }
@@ -272,14 +277,29 @@ checkcity()
 checkEmail()
 
 
+async function postOrder (){
+    await fetch('http://localhost:3000/api/products/post/contact', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(contact)
+  });
+}
 
-submitOrder.addEventListener(`submit`, (e) => {
-  if(checkFirstName() == false || checkLastName() == false || checkcity() == false || checkEmail() == false){
-  alert(`Formulaire non valide, veuillez remplir les champs concernés correctement.`)
-  e.preventDefault()
+function caca(){
+if(checkFirstName() == true){
+  console.log(`plop la guilde`)
 }
 else{
-  e.preventDefault()
+  console.log(`petit flop`)
 }
-})
+}
 
+
+const submitOrder = document.querySelector(`#order`)
+  submitOrder.addEventListener(`submit`, (e) => {
+    e.preventDefault();
+    e.stopPropagation()
+    })
+  
