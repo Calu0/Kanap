@@ -106,7 +106,7 @@ function changeQuantity(quantityInput, item, products) {
     }
   })
 }
-//test
+
 //fonction pour pouvoir supprimer un produit
 function deleteItem(item, deleteBtn, articleParent, products) {
 
@@ -154,6 +154,7 @@ function showProduct(products) {
 
   quantityTotal()
   priceTotal(products)
+
 }
 
 //fonction qui affiche la quantité totale de produit présent dans le panier
