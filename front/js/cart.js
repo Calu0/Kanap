@@ -149,7 +149,7 @@ function showProduct(products) {
     const priceValue = findId.price
 
     createProduct(imgValue, imgAltValue, titleValue, colorValue, priceValue, quantityValue, productbasketId, item, products)
-
+test
   }
 
   quantityTotal()
