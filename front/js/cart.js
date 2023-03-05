@@ -154,7 +154,6 @@ function showProduct(products) {
 
   quantityTotal()
   priceTotal(products)
-console.log(products)
 }
 
 //fonction qui affiche la quantité totale de produit présent dans le panier
