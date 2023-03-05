@@ -106,7 +106,7 @@ function changeQuantity(quantityInput, item, products) {
     }
   })
 }
-
+//test
 //fonction pour pouvoir supprimer un produit
 function deleteItem(item, deleteBtn, articleParent, products) {
 
