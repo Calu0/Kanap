@@ -139,7 +139,7 @@ function addToBasket() {
 //Ajout de l'évènement click sur le panier qui apelle la fonction ci-dessus
 document.querySelector(`#addToCart`).addEventListener(`click`, () => addToBasket())
 
-
+ 
 
 
 
