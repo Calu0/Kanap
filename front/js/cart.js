@@ -340,7 +340,7 @@ function postOrder(body) {
   })
     .then((r) => r.json())
     .then((data) =>
-      window.location.href = `/front/html/confirmation.html` + `?orderId=${data.orderId}`
+      window.location.href = `./confirmation.html?orderId=${data.orderId}`
     )
 }
 
